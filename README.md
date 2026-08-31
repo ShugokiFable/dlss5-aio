@@ -154,6 +154,10 @@ See `05-Legacy-Optiscaler-DLSS-Enabler\README.md`. **One approach per game — n
 
 ## 🔧 Troubleshooting
 
+**Log says `SuperSampling.Available=0 NeedsUpdatedDriver=0 MinDriver=0.0`.**
+
+That combination means the driver is fine and NGX simply can't find a DLSS implementation to load — `nvngx_dlss.dll` (and `nvngx_dlssnr.dll` for the Neural Rendering features) must sit **next to the game exe**. No-DLSS games don't ship them; copy from `01-Official-NVIDIA-DLLs` + `02-DLSS5-Neural-Rendering` into the game folder. This is exactly why games with native DLSS (GTA V Enhanced, Palworld) "just work" — they already have the DLLs.
+
 **Log says `SuperSampling.Available=0` / "DLSS is not available on this GPU/driver" (but your GPU is an RTX card and it works in other games).**
 
 The feeder chain is fine — the log line before it shows `NVSDK_NGX_D3D12_Init -> Success` and the effects loaded. The capability check fails on **this game's** D3D12 device. Cause: the game is **Unity running D3D11-on-12** (you'll see `D3D12\D3D12Core.dll` in the game folder, and the log says `opening same-device D3D12 session`). On D3D11-on-12 the game has a D3D12 device (the 11-on-12 wrapper), so the feeder attaches to it — but NGX can't enumerate DLSS on that wrapper device.
