@@ -160,12 +160,11 @@ That combination means the driver is fine and NGX simply can't find a DLSS imple
 
 **Log says `SuperSampling.Available=0` / "DLSS is not available on this GPU/driver" (but your GPU is an RTX card and it works in other games).**
 
-The feeder chain is fine — the log line before it shows `NVSDK_NGX_D3D12_Init -> Success` and the effects loaded. The capability check fails on **this game's** D3D12 device. Cause: the game is **Unity running D3D11-on-12** (you'll see `D3D12\D3D12Core.dll` in the game folder, and the log says `opening same-device D3D12 session`). On D3D11-on-12 the game has a D3D12 device (the 11-on-12 wrapper), so the feeder attaches to it — but NGX can't enumerate DLSS on that wrapper device.
+First, **make sure the DLLs are present** — see the section above (`Available=0 NeedsUpdatedDriver=0 MinDriver=0.0` = `nvngx_dlss.dll`/`nvngx_dlssnr.dll` missing next to the exe). That was the cause in every reported case so far.
 
-Fix — force the game to **pure D3D11** so the feeder creates its **own** D3D12 device (the proven D3D11 path: Metro 2033 Redux, SR3):
-1. Keep `mode=2` in `dlss5-feed.cfg` (that's the full DLSS path; `mode=1` is only a diagnostic transport test).
-2. Add **`-force-d3d11`** to the game's Steam launch options (Properties → Launch options).
-3. Relaunch and check `dlss5-feed.log` — the session line should change from `same-device` to a fresh `D3D12 session` with its own device, then `SuperSampling.Available=1` / `feature ready … DLAA`.
+**Log says `opening same-device D3D12 session` (Unity D3D11-on-12 games)?** That is **normal and works**. Unity games like this one render through the 11-on-12 wrapper, the feeder attaches to the game's device, and with the DLLs in place NGX initialises fine. Keep `mode=2` in `dlss5-feed.cfg` and **do not** add `-force-d3d11` — it's not needed (proven: Sledding Game runs DLAA with same-device, no launch flags).
+
+Only if you still get `Available=0` with the DLLs confirmed present AND a same-device session: try adding `-force-d3d11` to Steam launch options as a fallback (forces pure D3D11, feeder creates its own D3D12 device).
 
 **Other quick checks:** driver updated? RTX 40/50 required for the neural-rendering runtime (`nvngx_dlssnr.dll`). No `dlss5-feed.log` at all = wrong ReShade bitness (a 64-bit `dxgi.dll` can't load into a 32-bit game and vice versa). Motion vectors missing = `DLSS5_MV_PROVIDER` shows none in the log — install LumeniteFX Kernel (see scenario 2, step 4).
 
