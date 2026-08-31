@@ -27,24 +27,42 @@
 | `feed-vk-layer.zip` | Vulkan interop fallback — **only if a Vulkan game's log asks for it** | Vulkan |
 | `host64\` | The complete 64-bit helper environment for 32-bit games | **32-bit** games |
 
-### The bundled `reshade-shaders\` folder (NEW in v1.1.0)
+### The bundled `reshade-shaders\` folder (v1.2.0)
 
-Everything the game-side ReShade needs, in ReShade's own folder layout — copy the whole folder
-next to the game exe (or merge its contents into an existing `reshade-shaders`):
+Everything ReShade needs to **compile and run the feeder out of the box**, in ReShade's own
+folder layout — copy the whole folder next to the game exe (or merge into an existing
+`reshade-shaders`):
 
 ```
 reshade-shaders\
 ├── Shaders\
-│   ├── DLSS5_Feed.fx                 the feeder effect itself
-│   ├── iMMERSE\MartysMods_LAUNCHPAD.fx   motion-vector provider (provider 1)
-│   └── lumenite_QuantMotion.fx           motion-vector provider (provider 4)
-└── Textures\                         (font atlas + LUTs these shaders reference)
+│   ├── DLSS5_Feed.fx              the feeder effect itself
+│   ├── ReShade.fxh + ReShadeUI.fxh + Macros.fxh + Blending.fxh + TriDither.fxh + DrawText.fxh
+│   │                              ReShade's core headers — DLSS5_Feed.fx needs these to compile
+│   ├── Deband.fx                  must-have: removes color banding (MIT, Niklas Haas)
+│   ├── SweetFX\Levels.fx          must-have: the classic Levels / brightness-contrast effect
+│   ├── LUT.fx · DisplayDepth.fx · Daltonize.fx · UIMask.fx   standard free effects
+│   └── qUINT\qUINT_common.fxh     shared header for texMotionVectors-style providers (crosire)
+└── Textures\                      (font atlas + LUTs these effects reference)
 ```
 
-This is exactly the layout the pack owner tested with — the two motion-vector providers
-**iMMERSE Launchpad** and **LumeniteFX QuantMotion** are bundled here. The recommended
-**LumeniteFX Kernel** is *not* bundled (no redistribution-friendly license) — 2-minute install
-from github.com/umar-afzaal/LumeniteFX, see "Motion vectors" below.
+This folder is **self-sufficient**: it includes ReShade's own headers, so the feeder shader
+compiles even against a bare ReShade install that ships no shaders.
+
+**What is NOT bundled, and why** — the motion-vector providers:
+
+| Provider | `DLSS5_MV_PROVIDER` | Bundled? | Why |
+|---|---|---|---|
+| **LumeniteFX Kernel** ⭐ recommended | `3` | ❌ no | AGNYA license — **redistribution prohibited** |
+| **LumeniteFX QuantMotion** | `4` | ❌ no | AGNYA license — redistribution prohibited |
+| **iMMERSE Launchpad** | `1` | ❌ no | Pascal Gilcher license — **public propagation strictly forbidden** |
+| VORT | `2` | ❌ no | install from its repo |
+| Anything writing `texMotionVectors` (qUINT, dh_uber_motion) | `0` | ❌ no | install from their repos |
+
+(Your own backups of these still work — this restriction is only about **redistributing**
+them in a public repo.) Download one provider from its source (Kernel: github.com/umar-afzaal/
+LumeniteFX — 2 minutes), drop its files into `reshade-shaders\Shaders\` (plus its textures),
+set `DLSS5_MV_PROVIDER`, and you're set.
 
 ---
 
@@ -115,10 +133,11 @@ host bridge. See step 6 of the 32-bit install below.
    `01-Official-NVIDIA-DLLs\`). The add-on refuses to start without the neural-rendering
    runtime beside it.
 4. **Motion vectors** — pick ONE provider and set `DLSS5_MV_PROVIDER` (see the table below).
-   Bundled options: **Launchpad** (`=1`) or **QuantMotion** (`=4`). Recommended for best
-   quality: **LumeniteFX Kernel** (`=3`, download from github.com/umar-afzaal/LumeniteFX —
-   its `Shaders\` + `include\` → `reshade-shaders\Shaders\`, `Textures\lumenite_bluenoise256.png`
-   → `reshade-shaders\Textures\`).
+   The recommended **LumeniteFX Kernel** (`=3`) is a 2-minute download:
+   github.com/umar-afzaal/LumeniteFX → its `Shaders\` + `include\` → `reshade-shaders\Shaders\`,
+   `Textures\lumenite_bluenoise256.png` → `reshade-shaders\Textures\`.
+   (Providers can't be bundled in this public pack — iMMERSE and LumeniteFX both forbid
+   redistribution. The bundled folder has the core headers + must-have effects instead.)
 5. ReShade overlay (Home) → select `DLSS5_Feed.fx` → **Preprocessor definitions** →
    set `DLSS5_MV_PROVIDER` to your chosen value → reload effects.
 6. Enable the provider's technique, then **DLSS 5 Feed** *below it*, then enable neural
@@ -162,11 +181,11 @@ shaders that estimate where each pixel moved since the last frame.
 
 | `DLSS5_MV_PROVIDER` | Provider | Status in this pack |
 |---|---|---|
-| `0` | anything writing `texMotionVectors` (qUINT, dh_uber_motion) | install from their repos |
-| `1` | **iMMERSE Launchpad** (MartysMods) | ✅ **bundled** in `reshade-shaders` |
+| `0` | anything writing `texMotionVectors` (qUINT, dh_uber_motion) | `qUINT_common.fxh` bundled; shaders from their repos |
+| `1` | iMMERSE Launchpad (MartysMods) | download — not redistributable |
 | `2` | VORT | install from its repo |
-| `3` | **LumeniteFX Kernel** | ⭐ recommended — download (not bundled, see above) |
-| `4` | **LumeniteFX QuantMotion** | ✅ **bundled** in `reshade-shaders` |
+| `3` | **LumeniteFX Kernel** | ⭐ recommended — download (not redistributable) |
+| `4` | LumeniteFX QuantMotion | download — not redistributable |
 
 Rules:
 

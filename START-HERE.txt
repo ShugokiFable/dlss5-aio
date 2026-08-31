@@ -1,4 +1,4 @@
-DLSS 5 AIO v1.1.0 — START HERE
+DLSS 5 AIO v1.2.0 — START HERE
 ================================
 
 You downloaded the all-in-one DLSS 5 pack. Full docs: README.md in this folder
@@ -13,13 +13,15 @@ WHICH SITUATION ARE YOU IN?
 2) Game has NO DLSS and is 64-BIT (D3D11/D3D12/Vulkan)
    -> Install ReShade WITH ADD-ON SUPPORT from reshade.me against the game exe.
       Copy dlss5-feed.addon64 next to the exe and the WHOLE reshade-shaders folder
-      from 04-DLSS5-Feeder (it has DLSS5_Feed.fx + motion-vector providers built in).
+      from 04-DLSS5-Feeder (feeder shader + ReShade core headers + Deband/Levels/
+      LUT/DisplayDepth/Daltonize/UIMask — self-sufficient).
       Also copy renodx-dlss5.addon64 + nvngx_dlssnr.dll + nvngx_dlss.dll next to the
       exe (folders 02 and 01).
-      Motion vectors are REQUIRED: bundled Launchpad (=1) or QuantMotion (=4), or
-      LumeniteFX Kernel (=3, recommended) from github.com/umar-afzaal/LumeniteFX.
-      Set DLSS5_MV_PROVIDER in the ReShade overlay on DLSS5_Feed.fx, enable the
-      provider's technique ABOVE DLSS 5 Feed, then DLSS 5 Neural Rendering.
+      Motion vectors are REQUIRED: download LumeniteFX Kernel from
+      github.com/umar-afzaal/LumeniteFX (recommended, =3) or another provider —
+      they can't be bundled (licenses). Set DLSS5_MV_PROVIDER in the ReShade overlay
+      on DLSS5_Feed.fx, enable the provider's technique ABOVE DLSS 5 Feed, then
+      DLSS 5 Neural Rendering.
 
 3) Game has NO DLSS and is 32-BIT (or DirectX 9)  <-- the cool part
    -> Install 32-bit ReShade WITH ADD-ON SUPPORT against the game exe.
@@ -27,8 +29,9 @@ WHICH SITUATION ARE YOU IN?
       Copy the WHOLE reshade-shaders folder (from 04-DLSS5-Feeder).
       Copy the ENTIRE host64 FOLDER next to the game exe (keep the folder name
       host64 - all set up already).
-      Motion-vector provider + DLSS5_MV_PROVIDER as in step 2. There is NO
-      renodx-dlss5.addon32 - on 32-bit the RenoDX add-on stays x64 on the host side.
+      Motion-vector provider + DLSS5_MV_PROVIDER as in step 2 (download one —
+      none are bundled). There is NO renodx-dlss5.addon32 - on 32-bit the RenoDX
+      add-on stays x64 on the host side.
       Enable DLSS 5 Feed in-game. A "32-bit DLSS 5 Feeder" window opens - that
       is the DLSS 5 helper doing the real work. (Proven on Saints Row: The
       Third, 1440p DLAA.)

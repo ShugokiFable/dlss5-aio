@@ -4,7 +4,7 @@
 
 | | |
 |---|---|
-| **Pack version** | v1.1.0 (2026-08-31) |
+| **Pack version** | v1.2.0 (2026-08-31) |
 | **Official NVIDIA DLSS DLLs** | **310.7.129** — Super Resolution, Frame Generation, Ray Reconstruction |
 | **DLSS 5 neural-rendering runtime** | `nvngx_dlssnr.dll` **310.8.0** |
 | **Tools** | DLSS5-Swapper **1.1.1** · DLSS5-Feeder **v0.6.0-beta.1** |
@@ -46,8 +46,8 @@ DLSS5-AIO/
 │   ├── dlss5-feed.addon64            64-bit games
 │   ├── dlss5-feed.addon32            32-bit games
 │   ├── DLSS5_Feed.fx                 the feeder shader (→ reshade-shaders\Shaders)
-│   ├── reshade-shaders/              drop-in: DLSS5_Feed.fx + motion-vector providers
-│   │   └── Shaders/                  iMMERSE Launchpad + LumeniteFX QuantMotion bundled
+│   ├── reshade-shaders/              self-sufficient: feeder shader + ReShade core headers + must-have effects
+│   │   └── Shaders/                  Deband, Levels, LUT, DisplayDepth, Daltonize, UIMask, qUINT_common
 │   ├── feed-vk-layer.zip             only if a Vulkan game's log asks for it
 │   └── host64/                       complete 64-bit helper env for 32-bit games
 │       ├── dlss5-feed-host64.exe     the helper process
@@ -59,7 +59,7 @@ DLSS5-AIO/
     └── dlss-enabler-setup_0.9.4-…exe DLSS Enabler
 ```
 
-*Provenance: this pack restructures the original `!!!DLSS mod` collection — `GOATED NEW` → folders `02` + `04`, `Older` → folder `05` — and adds the official `zofficialdlls` set as folder `01`, plus the missing 64-bit feeder pieces (`dlss5-feed.addon64`, `DLSS5_Feed.fx`, `feed-vk-layer.zip`). v1.1.0 adds the owner's `reshade-shaders` folder (motion-vector providers + feeder shader, drop-in ready).*
+*Provenance: this pack restructures the original `!!!DLSS mod` collection — `GOATED NEW` → folders `02` + `04`, `Older` → folder `05` — and adds the official `zofficialdlls` set as folder `01`, plus the missing 64-bit feeder pieces (`dlss5-feed.addon64`, `DLSS5_Feed.fx`, `feed-vk-layer.zip`). v1.2.0's `reshade-shaders` is the free-to-share set: feeder shader + ReShade core headers + standard effects (Deband, Levels, LUT, DisplayDepth, Daltonize, UIMask, qUINT_common) — motion-vector providers are *not* bundled (iMMERSE and LumeniteFX licenses forbid redistribution).*
 
 ---
 
@@ -90,9 +90,9 @@ Notes: DX12-only (other APIs get a warning). A game under `Program Files` needs 
 ### Scenario 2 — Game has NO DLSS, 64-bit → DLSS5-Feeder
 
 1. Install **ReShade with add-on support** against the game exe (Direct3D 10/11/12, tick "Enable loading of add-ons"). This puts `dxgi.dll` next to the game.
-2. Copy `04-DLSS5-Feeder\dlss5-feed.addon64` next to the game exe, and the **whole `reshade-shaders\` folder** (it contains `DLSS5_Feed.fx` + bundled motion-vector providers).
+2. Copy `04-DLSS5-Feeder\dlss5-feed.addon64` next to the game exe, and the **whole `reshade-shaders\` folder** (feeder shader + ReShade core headers + must-have effects — self-sufficient).
 3. Copy `renodx-dlss5.addon64` + `nvngx_dlssnr.dll` + `nvngx_dlss.dll` next to the exe too (`02-DLSS5-Neural-Rendering\` has the first two; `01-Official-NVIDIA-DLLs\` has `nvngx_dlss.dll`). The add-on refuses to start without the neural-rendering runtime beside it.
-4. **Motion vectors are required.** Bundled options: **iMMERSE Launchpad** (`DLSS5_MV_PROVIDER=1`) or **LumeniteFX QuantMotion** (`=4`) — both in `reshade-shaders\Shaders\`. Best quality: **LumeniteFX Kernel** (`=3`) from github.com/umar-afzaal/LumeniteFX (its `Shaders\` + `include\` → `reshade-shaders\Shaders\`, `Textures\lumenite_bluenoise256.png` → `reshade-shaders\Textures\`) — not bundled (license isn't redistribution-friendly), 2-minute download. One provider only, enabled ABOVE `DLSS 5 Feed`.
+4. **Motion vectors are required.** The recommended **LumeniteFX Kernel** (`DLSS5_MV_PROVIDER=3`) is a 2-minute download: github.com/umar-afzaal/LumeniteFX (its `Shaders\` + `include\` → `reshade-shaders\Shaders\`, `Textures\lumenite_bluenoise256.png` → `reshade-shaders\Textures\`). Providers can't ship in this pack — iMMERSE and LumeniteFX both forbid redistribution — so the bundled folder instead has everything else (headers + must-have effects). One provider only, enabled ABOVE `DLSS 5 Feed`.
 5. In the ReShade overlay (Home): select `DLSS5_Feed.fx` → Preprocessor definitions → set `DLSS5_MV_PROVIDER` to your choice → reload effects. Enable the provider's technique, then **DLSS 5 Feed** *below it*, then enable neural rendering in the **DLSS 5 Neural Rendering** panel.
 6. Check `dlss5-feed.log` next to the exe for `feature ready … DLAA` and `frame N delivered`.
 
@@ -174,8 +174,9 @@ sha256sum -c SHA256SUMS.txt
 - **Rakan Alkhaldi (rakanki911)** — DLSS5-Swapper 1.1.1, MIT (github.com/rakanki911/DLSS5-Swapper)
 - **RenoDX community** — `renodx-dlss5.addon64` + custom `nvngx_dlssnr.dll` (RTX 40/50)
 - **crosire** — ReShade 6.8.0 (BSD-3-Clause)
-- **umar-afzaal** — LumeniteFX motion vectors: Kernel linked (not bundled), **QuantMotion bundled** in `reshade-shaders`
-- **MartysMods** — iMMERSE Launchpad motion-vector provider (**bundled** in `reshade-shaders`)
+- **umar-afzaal** — LumeniteFX motion vectors (Kernel + QuantMotion): linked, not bundled (AGNYA license forbids redistribution)
+- **MartysMods / iMMERSE (Pascal Gilcher)** — motion-vector provider: linked, not bundled (license forbids public propagation)
+- **Niklas Haas** — Deband.fx (MIT) · **CeeJay.dk** — SweetFX Levels · **crosire** — ReShade core headers + qUINT_common (all bundled, free to share)
 - **optiscaler/OptiScaler** + **artur-graniszewski/DLSS-Enabler** — legacy tools
 - **dege** — dgVoodoo2 (D3D9 → D3D11, linked)
 - **RankFTW** — RHI, the alternative DLSS 5 deploy tool (linked)

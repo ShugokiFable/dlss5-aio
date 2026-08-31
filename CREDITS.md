@@ -32,21 +32,24 @@ the pack is an assembly, a backup, and a convenience layer.
 
 ## Motion-vector providers supported by DLSS5-Feeder
 
-**Bundled in this pack** (`04-DLSS5-Feeder\reshade-shaders\Shaders\`): iMMERSE Launchpad and
-LumeniteFX QuantMotion. Everything else installs from its repo:
+**None are bundled in this pack** — both major sources (iMMERSE / MartysMods by Pascal
+Gilcher, and LumeniteFX by umar-afzaal) use licenses that forbid public redistribution, so
+they are **linked** here. The bundled `reshade-shaders` instead carries the free-to-share set:
+ReShade's own core headers, Deband (MIT), SweetFX Levels, LUT, DisplayDepth, Daltonize,
+UIMask and qUINT_common.
 
 | `DLSS5_MV_PROVIDER` | Provider | Source | Bundled? |
 |---|---|---|---|
-| `3` (recommended) | LumeniteFX Kernel | github.com/umar-afzaal/LumeniteFX | no (license) |
-| `1` | iMMERSE Launchpad | MartysMods (Nexus / MartysMods) | ✅ yes |
+| `3` (recommended) | LumeniteFX Kernel | github.com/umar-afzaal/LumeniteFX | no (AGNYA) |
+| `1` | iMMERSE Launchpad | MartysMods (Nexus / MartysMods) | no (Gilcher license) |
 | `2` | VORT | VORT (Nexus) | no |
-| `4` | LumeniteFX QuantMotion | github.com/umar-afzaal/LumeniteFX | ✅ yes |
-| `0` | Anything writing `texMotionVectors` (qUINT, dh_uber_motion) | Nexus / github.com/AlucardDH/dh-reshade-shaders | no |
+| `4` | LumeniteFX QuantMotion | github.com/umar-afzaal/LumeniteFX | no (AGNYA) |
+| `0` | Anything writing `texMotionVectors` (qUINT, dh_uber_motion) | Nexus / github.com/AlucardDH/dh-reshade-shaders | no (header only) |
 
 ## Pack assembly
 
 - Assembled, documented, packaged: **ShugokiFable** (2026-08-31)
-- Source material: `Z:\Backup\zzDLL\Nvidia\!!!DLSS mod` + `Z:\Backup\zzDLL\Nvidia\zofficialdlls` (byte-verified against the packed copies), plus the missing Feeder v0.6.0-beta.1 assets fetched from its GitHub release (`dlss5-feed.addon64`, `DLSS5_Feed.fx`, `feed-vk-layer.zip`). v1.1.0 adds the owner's `reshade-shaders` folder (Launchpad + QuantMotion providers, textures, feeder shader — byte-identical to the Z: backup).
+- Source material: `Z:\Backup\zzDLL\Nvidia\!!!DLSS mod` + `Z:\Backup\zzDLL\Nvidia\zofficialdlls` (byte-verified against the packed copies), plus the missing Feeder v0.6.0-beta.1 assets fetched from its GitHub release (`dlss5-feed.addon64`, `DLSS5_Feed.fx`, `feed-vk-layer.zip`). v1.2.0's `reshade-shaders` is the free-to-share set from `Z:\Backup\zzDLL\Reshade\reshade-shaders` + the DLSS mod folder (core headers, Deband, Levels, LUT, DisplayDepth, Daltonize, UIMask, qUINT_common) — provider files deliberately excluded (iMMERSE: Pascal Gilcher license forbids public propagation; LumeniteFX: AGNYA license forbids redistribution).
 - Known-working evidence: `dlss5-feed-host.log` from the pack owner's session — **Saints Row: The Third (32-bit), 2560×1440 DLAA, feature ready flags=66, 99,000+ frames evaluated** across a full play session.
 
 *If you are a listed author and want your component removed or re-credited differently, open an issue on the repo.*
