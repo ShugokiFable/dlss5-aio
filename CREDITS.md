@@ -30,20 +30,23 @@ the pack is an assembly, a backup, and a convenience layer.
 | **dgVoodoo2** (D3D9 → D3D11) | — | dege — dege.freeweb.hu/dgVoodoo2 | freeware — linked, not bundled |
 | **dlss5-dx11-bridge** (transport adapted inside Feeder) | — | NIGos — github.com/NIGos/dlss5-dx11-bridge | MIT (per Feeder README) |
 
-## Motion-vector providers supported by DLSS5-Feeder (none bundled — install from their repos)
+## Motion-vector providers supported by DLSS5-Feeder
 
-| `DLSS5_MV_PROVIDER` | Provider | Source |
-|---|---|---|
-| `3` (recommended) | LumeniteFX Kernel | github.com/umar-afzaal/LumeniteFX |
-| `1` | iMMERSE Launchpad | MartysMods (Nexus / MartysMods) |
-| `2` | VORT | VORT (Nexus) |
-| `4` | LumeniteFX QuantMotion | github.com/umar-afzaal/LumeniteFX |
-| `0` | Anything writing `texMotionVectors` (qUINT, dh_uber_motion) | Nexus / github.com/AlucardDH/dh-reshade-shaders |
+**Bundled in this pack** (`04-DLSS5-Feeder\reshade-shaders\Shaders\`): iMMERSE Launchpad and
+LumeniteFX QuantMotion. Everything else installs from its repo:
+
+| `DLSS5_MV_PROVIDER` | Provider | Source | Bundled? |
+|---|---|---|---|
+| `3` (recommended) | LumeniteFX Kernel | github.com/umar-afzaal/LumeniteFX | no (license) |
+| `1` | iMMERSE Launchpad | MartysMods (Nexus / MartysMods) | ✅ yes |
+| `2` | VORT | VORT (Nexus) | no |
+| `4` | LumeniteFX QuantMotion | github.com/umar-afzaal/LumeniteFX | ✅ yes |
+| `0` | Anything writing `texMotionVectors` (qUINT, dh_uber_motion) | Nexus / github.com/AlucardDH/dh-reshade-shaders | no |
 
 ## Pack assembly
 
 - Assembled, documented, packaged: **ShugokiFable** (2026-08-31)
-- Source material: `Z:\Backup\zzDLL\Nvidia\!!!DLSS mod` + `Z:\Backup\zzDLL\Nvidia\zofficialdlls` (byte-verified against the packed copies), plus the missing Feeder v0.6.0-beta.1 assets fetched from its GitHub release (`dlss5-feed.addon64`, `DLSS5_Feed.fx`, `feed-vk-layer.zip`).
+- Source material: `Z:\Backup\zzDLL\Nvidia\!!!DLSS mod` + `Z:\Backup\zzDLL\Nvidia\zofficialdlls` (byte-verified against the packed copies), plus the missing Feeder v0.6.0-beta.1 assets fetched from its GitHub release (`dlss5-feed.addon64`, `DLSS5_Feed.fx`, `feed-vk-layer.zip`). v1.1.0 adds the owner's `reshade-shaders` folder (Launchpad + QuantMotion providers, textures, feeder shader — byte-identical to the Z: backup).
 - Known-working evidence: `dlss5-feed-host.log` from the pack owner's session — **Saints Row: The Third (32-bit), 2560×1440 DLAA, feature ready flags=66, 99,000+ frames evaluated** across a full play session.
 
 *If you are a listed author and want your component removed or re-credited differently, open an issue on the repo.*
