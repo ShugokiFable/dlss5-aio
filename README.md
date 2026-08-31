@@ -152,6 +152,25 @@ See `05-Legacy-Optiscaler-DLSS-Enabler\README.md`. **One approach per game — n
 
 ---
 
+## 🔧 Troubleshooting
+
+**Log says `SuperSampling.Available=0` / "DLSS is not available on this GPU/driver" (but your GPU is an RTX card and it works in other games).**
+
+The feeder chain is fine — the log line before it shows `NVSDK_NGX_D3D12_Init -> Success` and the effects loaded. The capability check fails on **this game's** D3D12 device. Prime suspect: the game ships its **own DirectX Agility SDK** and runs D3D11-on-12 (typical for Unity games — you'll see a `D3D12\D3D12Core.dll` in the game folder, and the crash `0xC0000005` inside it right after the "not available" line).
+
+Fix (backup first, fully reversible):
+1. Close the game. In the game folder, rename `D3D12\D3D12Core.dll` → `D3D12Core.dll.bak` (backup done).
+2. Copy `C:\Windows\System32\D3D12Core.dll` into the game's `D3D12\` folder.
+3. Relaunch and check `dlss5-feed.log` for `SuperSampling.Available=1` / `feature ready … DLAA`.
+
+The bundled copy is usually an older Agility SDK than the OS one (example: game shipped 1.618.1, system had 10.0.26100.8972). Agility is forward-compatible, and NGX 310.x needs the newer one. Revert any time by renaming the `.bak` back. If the game breaks, Steam → Verify integrity of game files restores the original.
+
+Still `Available=0` after that? For Unity games, launch with the **`-force-d3d11`** command-line option (Steam → Properties → Launch options) to drop the 11-on-12 path — the feeder then uses its own D3D12 device exactly like the proven 32-bit setup.
+
+**Other quick checks:** driver updated? RTX 40/50 required for the neural-rendering runtime (`nvngx_dlssnr.dll`). No `dlss5-feed.log` at all = wrong ReShade bitness (a 64-bit `dxgi.dll` can't load into a 32-bit game and vice versa). Motion vectors missing = `DLSS5_MV_PROVIDER` shows none in the log — install LumeniteFX Kernel (see scenario 2, step 4).
+
+---
+
 ## 🔄 Keeping it updated
 
 - **Official DLSS DLLs:** watch TechPowerUp / TechSpot "NVIDIA DLSS DLL" pages, or the NVIDIA/DLSS GitHub SDK releases. Version shown here: 310.7.129 (SR/FG/RR), Streamline 2.13.0.
