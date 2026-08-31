@@ -1,4 +1,4 @@
-DLSS 5 AIO v1.2.0 — START HERE
+DLSS 5 AIO — START HERE
 ================================
 
 You downloaded the all-in-one DLSS 5 pack. Full docs: README.md in this folder
