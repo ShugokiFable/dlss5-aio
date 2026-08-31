@@ -2,6 +2,9 @@
 
 **Everything you need to get DLSS 5 Neural Rendering running on almost any game — plus the latest official NVIDIA DLSS DLLs for every game that already has DLSS.**
 
+> **⬇️ Download:** grab the latest release here — [github.com/ShugokiFable/dlss5-aio/releases/latest](https://github.com/ShugokiFable/dlss5-aio/releases/latest).
+> It's a 3-part 7-Zip (~635 MB total): download **all 3 parts** into one folder, right-click part `.001`, **Extract Here** (7-Zip), then open **START-HERE.txt**.
+
 | | |
 |---|---|
 | **Pack version** | v1.2.0 (2026-08-31) |
