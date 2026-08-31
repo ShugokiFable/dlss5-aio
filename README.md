@@ -95,7 +95,7 @@ Notes: DX12-only (other APIs get a warning). A game under `Program Files` needs 
 1. Install **ReShade with add-on support** against the game exe (Direct3D 10/11/12, tick "Enable loading of add-ons"). This puts `dxgi.dll` next to the game.
 2. Copy `04-DLSS5-Feeder\dlss5-feed.addon64` next to the game exe, and the **whole `reshade-shaders\` folder** (feeder shader + ReShade core headers + must-have effects — self-sufficient).
 3. Copy `renodx-dlss5.addon64` + `nvngx_dlssnr.dll` + `nvngx_dlss.dll` next to the exe too (`02-DLSS5-Neural-Rendering\` has the first two; `01-Official-NVIDIA-DLLs\` has `nvngx_dlss.dll`). The add-on refuses to start without the neural-rendering runtime beside it.
-4. **Motion vectors are required.** The recommended **LumeniteFX Kernel** (`DLSS5_MV_PROVIDER=3`) is a 2-minute download: github.com/umar-afzaal/LumeniteFX (its `Shaders\` + `include\` → `reshade-shaders\Shaders\`, `Textures\lumenite_bluenoise256.png` → `reshade-shaders\Textures\`). Providers can't ship in this pack — iMMERSE and LumeniteFX both forbid redistribution — so the bundled folder instead has everything else (headers + must-have effects). One provider only, enabled ABOVE `DLSS 5 Feed`.
+4. **Motion vectors are required.** The recommended **LumeniteFX Kernel** (`DLSS5_MV_PROVIDER=3`) is a 2-minute download: [github.com/umar-afzaal/LumeniteFX](https://github.com/umar-afzaal/LumeniteFX) (its `Shaders\` + `include\` → `reshade-shaders\Shaders\`, `Textures\lumenite_bluenoise256.png` → `reshade-shaders\Textures\`). Providers can't ship in this pack — iMMERSE and LumeniteFX both forbid redistribution — so the bundled folder instead has everything else (headers + must-have effects). One provider only, enabled ABOVE `DLSS 5 Feed`.
 5. In the ReShade overlay (Home): select `DLSS5_Feed.fx` → Preprocessor definitions → set `DLSS5_MV_PROVIDER` to your choice → reload effects. Enable the provider's technique, then **DLSS 5 Feed** *below it*, then enable neural rendering in the **DLSS 5 Neural Rendering** panel.
 6. Check `dlss5-feed.log` next to the exe for `feature ready … DLAA` and `frame N delivered`.
 
@@ -190,16 +190,16 @@ sha256sum -c SHA256SUMS.txt
 
 ## 🙏 Credits & licenses
 
-- **NVIDIA** — DLSS 5, official DLSS/Streamline DLLs (see Streamline folder for NIS/Reflex licenses)
-- **jlrouzies-fr** — DLSS5-Feeder v0.6.0-beta.1 (github.com/jlrouzies-fr/DLSS5-Feeder)
-- **Rakan Alkhaldi (rakanki911)** — DLSS5-Swapper 1.1.1, MIT (github.com/rakanki911/DLSS5-Swapper)
-- **RenoDX community** — `renodx-dlss5.addon64` + custom `nvngx_dlssnr.dll` (RTX 40/50)
-- **crosire** — ReShade 6.8.0 (BSD-3-Clause)
-- **umar-afzaal** — LumeniteFX motion vectors (Kernel + QuantMotion): linked, not bundled (AGNYA license forbids redistribution)
-- **MartysMods / iMMERSE (Pascal Gilcher)** — motion-vector provider: linked, not bundled (license forbids public propagation)
-- **Niklas Haas** — Deband.fx (MIT) · **CeeJay.dk** — SweetFX Levels · **crosire** — ReShade core headers + qUINT_common (all bundled, free to share)
-- **optiscaler/OptiScaler** + **artur-graniszewski/DLSS-Enabler** — legacy tools
-- **dege** — dgVoodoo2 (D3D9 → D3D11, linked)
-- **RankFTW** — RHI, the alternative DLSS 5 deploy tool (linked)
+- **[NVIDIA](https://www.nvidia.com/en-us/geforce/technologies/dlss/)** — DLSS 5, official DLSS/Streamline DLLs (see Streamline folder for NIS/Reflex licenses)
+- **[jlrouzies-fr](https://github.com/jlrouzies-fr/DLSS5-Feeder)** — DLSS5-Feeder v0.6.0-beta.1
+- **[Rakan Alkhaldi (rakanki911)](https://github.com/rakanki911/DLSS5-Swapper)** — DLSS5-Swapper 1.1.1, MIT
+- **[RenoDX (clshortfuse)](https://github.com/clshortfuse/renodx)** — `renodx-dlss5.addon64` + custom `nvngx_dlssnr.dll` (RTX 40/50)
+- **[crosire](https://github.com/crosire/reshade)** — ReShade 6.8.0 (BSD-3-Clause)
+- **[umar-afzaal](https://github.com/umar-afzaal/LumeniteFX)** — LumeniteFX motion vectors (Kernel + QuantMotion): linked, not bundled (AGNYA license forbids redistribution)
+- **[MartysMods / iMMERSE (Pascal Gilcher)](https://github.com/martymcmodding/iMMERSE)** — motion-vector provider: linked, not bundled (license forbids public propagation)
+- **[Niklas Haas](https://github.com/crosire/reshade-shaders/blob/slim/Shaders/Deband.fx)** — Deband.fx (MIT) · **[CeeJay.dk](https://github.com/CeeJayDK/SweetFX)** — SweetFX Levels · **[crosire](https://github.com/crosire/reshade-shaders)** — ReShade core headers + qUINT_common (all bundled, free to share)
+- **[optiscaler](https://github.com/optiscaler/OptiScaler)** + **[artur-graniszewski](https://github.com/artur-graniszewski/DLSS-Enabler)** — legacy tools
+- **[dege](https://github.com/dege-diosg/dgVoodoo2)** — dgVoodoo2 (D3D9 → D3D11, linked)
+- **[RankFTW](https://github.com/RankFTW/RHI)** — RHI, the alternative DLSS 5 deploy tool (linked)
 
 Full credits & per-component licenses: **`CREDITS.md`** / **`LICENSE.md`**. Pack assembled, documented and packaged by **ShugokiFable** — this is a personal-use backup & convenience pack; official tools, credit and links always go to the original authors.
