@@ -7,7 +7,7 @@
 
 | | |
 |---|---|
-| **Pack version** | v1.2.0 (2026-08-31) |
+| **Pack version** | v1.2.4 (2026-08-31) |
 | **Official NVIDIA DLSS DLLs** | **310.7.129** — Super Resolution, Frame Generation, Ray Reconstruction |
 | **DLSS 5 neural-rendering runtime** | `nvngx_dlssnr.dll` **310.8.0** |
 | **Tools** | DLSS5-Swapper **1.1.1** · DLSS5-Feeder **v0.6.0-beta.1** |
@@ -62,7 +62,7 @@ DLSS5-AIO/
     └── dlss-enabler-setup_0.9.4-…exe DLSS Enabler
 ```
 
-*Provenance: this pack restructures the original `!!!DLSS mod` collection — `GOATED NEW` → folders `02` + `04`, `Older` → folder `05` — and adds the official `zofficialdlls` set as folder `01`, plus the missing 64-bit feeder pieces (`dlss5-feed.addon64`, `DLSS5_Feed.fx`, `feed-vk-layer.zip`). v1.2.0's `reshade-shaders` is the free-to-share set: feeder shader + ReShade core headers + standard effects (Deband, Levels, LUT, DisplayDepth, Daltonize, UIMask, qUINT_common) — motion-vector providers are *not* bundled (iMMERSE and LumeniteFX licenses forbid redistribution).*
+*Provenance: this pack restructures the original `!!!DLSS mod` collection — `GOATED NEW` → folders `02` + `04`, `Older` → folder `05` — and adds the official `zofficialdlls` set as folder `01`, plus the missing 64-bit feeder pieces (`dlss5-feed.addon64`, `DLSS5_Feed.fx`, `feed-vk-layer.zip`). The `reshade-shaders` folder is the free-to-share set: feeder shader + ReShade core headers + standard effects (Deband, Levels, LUT, DisplayDepth, Daltonize, UIMask, qUINT_common) — motion-vector providers are *not* bundled (iMMERSE and LumeniteFX licenses forbid redistribution).*
 
 ---
 

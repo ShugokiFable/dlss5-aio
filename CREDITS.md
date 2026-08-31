@@ -49,7 +49,7 @@ UIMask and qUINT_common.
 ## Pack assembly
 
 - Assembled, documented, packaged: **ShugokiFable** (2026-08-31)
-- Source material: the original `!!!DLSS mod` collection (restructured into folders `01`–`05`) plus the official `zofficialdlls` NVIDIA DLL set (byte-verified against the packed copies), with the missing Feeder v0.6.0-beta.1 assets fetched from its GitHub release (`dlss5-feed.addon64`, `DLSS5_Feed.fx`, `feed-vk-layer.zip`). v1.2.0's `reshade-shaders` is the free-to-share set (core headers, Deband, Levels, LUT, DisplayDepth, Daltonize, UIMask, qUINT_common) — provider files deliberately excluded (iMMERSE: Pascal Gilcher license forbids public propagation; LumeniteFX: AGNYA license forbids redistribution).
+- Source material: the original `!!!DLSS mod` collection (restructured into folders `01`–`05`) plus the official `zofficialdlls` NVIDIA DLL set (byte-verified against the packed copies), with the missing Feeder v0.6.0-beta.1 assets fetched from its GitHub release (`dlss5-feed.addon64`, `DLSS5_Feed.fx`, `feed-vk-layer.zip`). The `reshade-shaders` folder is the free-to-share set (core headers, Deband, Levels, LUT, DisplayDepth, Daltonize, UIMask, qUINT_common) — provider files deliberately excluded (iMMERSE: Pascal Gilcher license forbids public propagation; LumeniteFX: AGNYA license forbids redistribution).
 - Known-working evidence: `dlss5-feed-host.log` from the pack owner's session — **Saints Row: The Third (32-bit), 2560×1440 DLAA, feature ready flags=66, 99,000+ frames evaluated** across a full play session.
 
 *If you are a listed author and want your component removed or re-credited differently, open an issue on the repo.*
