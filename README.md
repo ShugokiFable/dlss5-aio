@@ -4,7 +4,7 @@
 
 | | |
 |---|---|
-| **Pack version** | v1.0.0 (2026-08-31) |
+| **Pack version** | v1.1.0 (2026-08-31) |
 | **Official NVIDIA DLSS DLLs** | **310.7.129** — Super Resolution, Frame Generation, Ray Reconstruction |
 | **DLSS 5 neural-rendering runtime** | `nvngx_dlssnr.dll` **310.8.0** |
 | **Tools** | DLSS5-Swapper **1.1.1** · DLSS5-Feeder **v0.6.0-beta.1** |
@@ -46,6 +46,8 @@ DLSS5-AIO/
 │   ├── dlss5-feed.addon64            64-bit games
 │   ├── dlss5-feed.addon32            32-bit games
 │   ├── DLSS5_Feed.fx                 the feeder shader (→ reshade-shaders\Shaders)
+│   ├── reshade-shaders/              drop-in: DLSS5_Feed.fx + motion-vector providers
+│   │   └── Shaders/                  iMMERSE Launchpad + LumeniteFX QuantMotion bundled
 │   ├── feed-vk-layer.zip             only if a Vulkan game's log asks for it
 │   └── host64/                       complete 64-bit helper env for 32-bit games
 │       ├── dlss5-feed-host64.exe     the helper process
@@ -57,7 +59,7 @@ DLSS5-AIO/
     └── dlss-enabler-setup_0.9.4-…exe DLSS Enabler
 ```
 
-*Provenance: this pack restructures the original `!!!DLSS mod` collection — `GOATED NEW` → folders `02` + `04`, `Older` → folder `05` — and adds the official `zofficialdlls` set as folder `01`, plus the missing 64-bit feeder pieces (`dlss5-feed.addon64`, `DLSS5_Feed.fx`, `feed-vk-layer.zip`).*
+*Provenance: this pack restructures the original `!!!DLSS mod` collection — `GOATED NEW` → folders `02` + `04`, `Older` → folder `05` — and adds the official `zofficialdlls` set as folder `01`, plus the missing 64-bit feeder pieces (`dlss5-feed.addon64`, `DLSS5_Feed.fx`, `feed-vk-layer.zip`). v1.1.0 adds the owner's `reshade-shaders` folder (motion-vector providers + feeder shader, drop-in ready).*
 
 ---
 
@@ -88,18 +90,18 @@ Notes: DX12-only (other APIs get a warning). A game under `Program Files` needs 
 ### Scenario 2 — Game has NO DLSS, 64-bit → DLSS5-Feeder
 
 1. Install **ReShade with add-on support** against the game exe (Direct3D 10/11/12, tick "Enable loading of add-ons"). This puts `dxgi.dll` next to the game.
-2. Copy `04-DLSS5-Feeder\dlss5-feed.addon64` next to the game exe, and `DLSS5_Feed.fx` into `reshade-shaders\Shaders\`.
+2. Copy `04-DLSS5-Feeder\dlss5-feed.addon64` next to the game exe, and the **whole `reshade-shaders\` folder** (it contains `DLSS5_Feed.fx` + bundled motion-vector providers).
 3. Copy `renodx-dlss5.addon64` + `nvngx_dlssnr.dll` + `nvngx_dlss.dll` next to the exe too (`02-DLSS5-Neural-Rendering\` has the first two; `01-Official-NVIDIA-DLLs\` has `nvngx_dlss.dll`). The add-on refuses to start without the neural-rendering runtime beside it.
-4. **Motion vectors are required.** Install the recommended provider **LumeniteFX Kernel** (github.com/umar-afzaal/LumeniteFX — its `Shaders\` + `include\` → `reshade-shaders\Shaders\`, and `Textures\lumenite_bluenoise256.png` → `reshade-shaders\Textures\`). Not bundled here (its license isn't redistribution-friendly) — it's a 2-minute download. Alternatives: iMMERSE Launchpad, VORT, qUINT/`texMotionVectors` shaders.
-5. In the ReShade overlay (Home): select `DLSS5_Feed.fx` → Preprocessor definitions → set `DLSS5_MV_PROVIDER = 3` (LumeniteFX Kernel) → reload effects. Enable **LUMENITE: Kernel 2.0**, then **DLSS 5 Feed** *below it*, then enable neural rendering in the **DLSS 5 Neural Rendering** panel.
+4. **Motion vectors are required.** Bundled options: **iMMERSE Launchpad** (`DLSS5_MV_PROVIDER=1`) or **LumeniteFX QuantMotion** (`=4`) — both in `reshade-shaders\Shaders\`. Best quality: **LumeniteFX Kernel** (`=3`) from github.com/umar-afzaal/LumeniteFX (its `Shaders\` + `include\` → `reshade-shaders\Shaders\`, `Textures\lumenite_bluenoise256.png` → `reshade-shaders\Textures\`) — not bundled (license isn't redistribution-friendly), 2-minute download. One provider only, enabled ABOVE `DLSS 5 Feed`.
+5. In the ReShade overlay (Home): select `DLSS5_Feed.fx` → Preprocessor definitions → set `DLSS5_MV_PROVIDER` to your choice → reload effects. Enable the provider's technique, then **DLSS 5 Feed** *below it*, then enable neural rendering in the **DLSS 5 Neural Rendering** panel.
 6. Check `dlss5-feed.log` next to the exe for `feature ready … DLAA` and `frame N delivered`.
 
 ### Scenario 3 — Game has NO DLSS, 32-bit (or D3D9) → DLSS5-Feeder 32-bit ⭐
 
 1. Install **32-bit ReShade** with add-on support against the game exe (`dxgi.dll` should be ~4.4 MB — that's the x86 build).
-2. Copy **`dlss5-feed.addon32`** next to the game exe and `DLSS5_Feed.fx` into `reshade-shaders\Shaders\`.
-3. Copy the **entire `host64\` folder** next to the game exe. Everything inside is already configured (helper exe, 64-bit ReShade, DLSS 5 add-on, DLSS runtimes, tuned `ReShade.ini`).
-4. Install a motion-vector provider and set `DLSS5_MV_PROVIDER` exactly as in scenario 2 (steps 4–5).
+2. Copy **`dlss5-feed.addon32`** next to the game exe and the **whole `reshade-shaders\` folder**.
+3. Copy the **entire `host64\` folder** next to the game exe — keep the folder name `host64` (`Game\host64\dlss5-feed-host64.exe`). Everything inside is already configured (helper exe, 64-bit ReShade, DLSS 5 add-on, DLSS runtimes, tuned `ReShade.ini`).
+4. Motion vectors + `DLSS5_MV_PROVIDER` exactly as in scenario 2 (steps 4–5). **There is no `renodx-dlss5.addon32`** — on 32-bit the RenoDX add-on stays x64 on the host side.
 5. Enable **DLSS 5 Feed** in the overlay. The first fed frame spawns `host64\dlss5-feed-host64.exe` (a window titled "32-bit DLSS 5 Feeder") — that's where the DLSS 5 add-on's own full panel lives. Set `host_window=0` on the add-on page once you're happy with it.
 6. **DirectX 9 games:** translate to D3D11 first with **dgVoodoo2** (dege.freeweb.hu) — copy `MS\x86\D3D9.dll` + `dgVoodoo.conf` + `dgVoodooCpl.exe` next to the exe, set `DisableAndPassThru=false`, `VRAM=1GB`, `OutputAPI=d3d11_fl11_0`, verify the watermark, then install the feeder normally (ReShade as `dxgi.dll`, never `d3d9.dll`).
 
@@ -141,6 +143,10 @@ See `05-Legacy-Optiscaler-DLSS-Enabler\README.md`. **One approach per game — n
 
 **Does it touch my system or go online?** The Swapper makes zero network requests. Nothing here installs drivers. Everything runs from the game folder.
 
+**Is it safe for multiplayer / anti-cheat games?** Not guaranteed — ReShade add-ons, NGX hooking and DLL injection can trigger anti-cheat (BDO, Warframe, APB Reloaded, …). The owner saw BDO warn over similar DLSS injection software. "Technically compatible" ≠ "safe on an online account" — keep this to offline/single-player titles.
+
+**DLSS 5 = Frame Generation?** No. DLAA/Super Resolution, Neural Rendering, Frame Generation and Multi Frame Generation are separate. This setup targets **DLAA + DLSS 5 Neural Rendering**; it doesn't promise frame gen.
+
 ---
 
 ## 🔄 Keeping it updated
@@ -168,7 +174,8 @@ sha256sum -c SHA256SUMS.txt
 - **Rakan Alkhaldi (rakanki911)** — DLSS5-Swapper 1.1.1, MIT (github.com/rakanki911/DLSS5-Swapper)
 - **RenoDX community** — `renodx-dlss5.addon64` + custom `nvngx_dlssnr.dll` (RTX 40/50)
 - **crosire** — ReShade 6.8.0 (BSD-3-Clause)
-- **umar-afzaal** — LumeniteFX motion vectors (linked, not bundled)
+- **umar-afzaal** — LumeniteFX motion vectors: Kernel linked (not bundled), **QuantMotion bundled** in `reshade-shaders`
+- **MartysMods** — iMMERSE Launchpad motion-vector provider (**bundled** in `reshade-shaders`)
 - **optiscaler/OptiScaler** + **artur-graniszewski/DLSS-Enabler** — legacy tools
 - **dege** — dgVoodoo2 (D3D9 → D3D11, linked)
 - **RankFTW** — RHI, the alternative DLSS 5 deploy tool (linked)
